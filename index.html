@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elissa Cusson — Between Two Springs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       GLOBAL TOKENS — edit these to change the look of everything
+    ============================================================ */
+    :root {
+      --color-bg:        #1E1E20;
+      --color-surface:   #29292C;
+      --color-text:      #F2EFE8;
+      --color-muted:     #A0A0A5;
+      --color-accent:    #C9A84C;
+      --color-border:    #3A3A3E;
+      --font-display:    'Cormorant Garamond', Georgia, serif;
+      --font-body:       'Jost', system-ui, sans-serif;
+      --max-width:       1280px;
+      --section-gap:     5rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: clamp(14px, 1.5vw, 16px);
+      line-height: 1.75;
+    }
+
+    /* Don't force-crop images globally */
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    section { padding: var(--section-gap) 0; }
+    hr.divider { border: none; border-top: 1px solid var(--color-border); margin: 0; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1.2rem 0;
+    }
+    .nav-inner {
+      max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .nav-name {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 400;
+      letter-spacing: 0.03em; text-decoration: none; color: var(--color-text);
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-body); font-size: 0.78rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+      color: var(--color-muted); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--color-text); }
+
+    /* ============================================================
+       BIO
+    ============================================================ */
+    .bio-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: clamp(2.5rem, 4vw, 4rem);
+      align-items: start;
+    }
+    .bio-photo {
+      width: 100%;
+      aspect-ratio: 4 / 6;
+      overflow: hidden;
+      background: var(--color-border);
+    }
+    .bio-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .bio-photo.placeholder {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; letter-spacing: 0.1em; color: var(--color-muted);
+      text-align: center; padding: 1rem;
+    }
+    .bio-text { padding-top: 0.55rem; }
+    .bio-eyebrow {
+      font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--color-accent); margin-bottom: 1.2rem;
+    }
+    .bio-name {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 300; line-height: 1.1; margin-bottom: 1.4rem;
+    }
+    .bio-body { font-size: clamp(0.88rem, 1.3vw, 0.97rem); color: var(--color-text); max-width: 52ch; }
+    .bio-body p + p { margin-top: 1em; }
+
+    /* ============================================================
+       SERIES SECTION
+    ============================================================ */
+    .section-label {
+      font-family: var(--font-body); font-size: 0.7rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--color-accent); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 300; line-height: 1.15; margin-bottom: 3rem;
+    }
+    .section-intro {
+      font-size: clamp(0.85rem, 1.3vw, 0.95rem); color: var(--color-text);
+      max-width: 120ch; margin-bottom: 6rem; line-height: 1.8;
+    }
+
+    /* Align the series heading + concept text with the bio text column
+       (bio photo column is 320px wide + the same responsive gap) */
+    #series .section-label,
+    #series .section-title,
+    #series .section-intro {
+      margin-left: calc(320px + clamp(2.5rem, 4vw, 4rem));
+    }
+    #series .section-intro { max-width: 62ch; }
+
+    /* ============================================================
+       PAINTINGS — one work per row, centered, gallery-style.
+       Images keep their natural proportions; card width is
+       capped by orientation (portrait / square / landscape).
+    ============================================================ */
+
+    .paintings-grid {
+      display: grid;
+      grid-template-columns: 1fr;         /* one card per row */
+      gap: clamp(3.5rem, 7vw, 6rem);      /* generous breathing room between works */
+      justify-items: center;
+    }
+
+    /*
+      One work per row. Each card is centered and sized by its
+      orientation so portraits don't blow up beyond their proportions:
+        portrait (default)      → max 620px wide
+        near-square             → max 720px
+        landscape               → max 880px
+        wide landscape (diptych)→ max 980px
+    */
+    .painting-card { width: 100%; max-width: 620px; min-width: 0; }
+    .painting-card.size-landscape-wide  { max-width: 980px; }  /* diptych panels */
+    .painting-card.size-landscape       { max-width: 880px; }  /* brise, fleurs */
+    .painting-card.size-square          { max-width: 720px; }  /* mimosa */
+
+    .painting-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    .painting-thumb {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      width: 100%;
+      background: var(--color-border);
+    }
+
+    /* Image fills its natural aspect ratio — NO distortion */
+    .painting-thumb img {
+      display: block;
+      width: 100%;
+      height: auto;        /* natural height, no cropping */
+      transition: transform 0.5s ease;
+    }
+
+    .painting-thumb:hover img { transform: scale(1.03); }
+
+    .painting-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,20,22,0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .painting-thumb:hover .painting-thumb-overlay { background: rgba(20,20,22,0.40); }
+    .painting-thumb-overlay span {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #F2EFE8;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .painting-thumb:hover .painting-thumb-overlay span { opacity: 1; }
+
+    .painting-info {
+      padding: 1rem 1.3rem 1.1rem;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .painting-info-left { flex: 1; min-width: 0; }
+    .painting-title {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.5vw, 1.3rem);
+      font-weight: 400; font-style: italic; line-height: 1.2;
+      margin-bottom: 0.1rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .painting-subtitle {
+      font-size: 0.65rem; color: var(--color-muted); letter-spacing: 0.04em;
+    }
+    .painting-meta {
+      font-size: 0.65rem; color: var(--color-muted);
+      letter-spacing: 0.03em; margin-top: 0.1rem;
+    }
+    .painting-price {
+      font-family: var(--font-display);
+      font-size: clamp(0.85rem, 1.1vw, 1rem);
+      color: var(--color-text); white-space: nowrap;
+    }
+
+    /* Diptych label above the two stacked panels */
+    .diptych-label {
+      grid-column: 1 / -1;
+      justify-self: center;
+      text-align: center;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      /* pull the label down toward the first panel across the large row gap */
+      margin-bottom: clamp(-4rem, -4.5vw, -2rem);
+    }
+
+    /* Tablet */
+    @media (max-width: 860px) {
+      .paintings-grid { gap: 3rem; }
+      .painting-card,
+      .painting-card.size-landscape,
+      .painting-card.size-landscape-wide,
+      .painting-card.size-square { max-width: 100%; }
+    }
+
+    @media (max-width: 700px) {
+      .bio-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .bio-photo { max-width: 180px; aspect-ratio: 1 / 1; }
+      .nav-links { gap: 1.2rem; }
+      :root { --section-gap: 3rem; }
+      #series .section-label,
+      #series .section-title,
+      #series .section-intro { margin-left: 0; }
+    }
+    @media (max-width: 400px) {
+      .nav-links { gap: 0.8rem; }
+      .nav-links a { font-size: 0.68rem; }
+    }
+
+    /* ============================================================
+       LIGHTBOX
+    ============================================================ */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 12, 0.96);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 92vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 78vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-caption {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-style: italic;
+      color: rgba(242,239,232,0.75);
+      text-align: center;
+    }
+
+    .lightbox-nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .lightbox-btn {
+      background: none;
+      border: 1px solid rgba(242,239,232,0.25);
+      color: rgba(242,239,232,0.85);
+      width: 2.6rem; height: 2.6rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      font-size: 1rem;
+    }
+    .lightbox-btn:hover {
+      background: rgba(242,239,232,0.12);
+      border-color: rgba(242,239,232,0.5);
+    }
+
+    .lightbox-counter {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: rgba(242,239,232,0.5);
+      min-width: 3.5rem;
+      text-align: center;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -0.2rem; right: 0;
+      background: none; border: none;
+      color: rgba(242,239,232,0.6);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      padding: 0.2rem 0.4rem;
+    }
+    .lightbox-close:hover { color: rgba(242,239,232,1); }
+
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================
+       NAVIGATION
+  ====================================================== -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#bio" class="nav-name"></a>
+      <ul class="nav-links">
+        <li><a href="#bio">About</a></li>
+        <li><a href="#series">Works</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <!-- ======================================================
+       BIO
+  ====================================================== -->
+  <section id="bio">
+    <div class="container">
+      <div class="bio-grid">
+
+        <div class="bio-photo">
+          <img src="Elissa.JPG" alt="Elisa" />
+        </div>
+        <div class="bio-text">
+          <p class="bio-eyebrow">Painter — Barcelona</p>
+          <h1 class="bio-name">Elissa Cusson</h1>
+          <div class="bio-body">
+            <p>I am a French-Lebanese painter, raised in Paris between two cultures, with art woven into the fabric of everyday life from the beginning.</p>
+            <p>Drawn early to the luminous vision of Monet and the pioneering geometric compositions of Kupka, I found in abstraction a language that felt close to thought.</p>
+            <p>My paintings follow the rhythm of reflections. The way a feeling surfaces before it has a name, the way structure and chaos negotiate in real time. Geometric yet organic, they map the mind in motion: ideas as they arrive, as they settle into form. Nature is always present underneath, in the curve of a line, in the breath between shapes.</p>
+            <p>To me, painting is an act of both listening and expression.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ======================================================
+       SERIES
+  ====================================================== -->
+  <section id="series">
+    <div class="container">
+
+      <p class="section-label">Painting Series</p>
+      <h2 class="section-title">Between Two Springs</h2>
+      <p class="section-intro">
+        Spring in Barcelona arrives gently. Warm air, the scent of flowers, light that makes everything feel soft and pleasant. It is easy to surrender to it.<br><br>
+        But spring also arrives in Lebanon, where I have roots and people I love. There, the same season carries a different weight: dust and rubble alongside blossoms, beauty that exists in spite of everything.<br><br>
+        Between Two Springs is born from that contradiction and from the guilt of living in sweetness while those close to me live in the shadow of war. The paintings hold both truths at once: flowers push through, colour flickers with hope, but the charcoal and Chinese ink stain everything, seep into the edges, refuse to let the light be simple.<br><br>
+        These works do not resolve the tension. They sit inside it.
+      </p>
+
+      <!-- =====================================================
+           PAINTINGS
+           Each card uses data-images="file1.jpg|file2.jpg|..."
+           The first image = main photo on the card.
+           The second image = detail shown on the card.
+           Any further images appear only in the lightbox.
+           The arrow button appears automatically when there
+           are more than 2 images total.
+
+           TO ADD A NEW PAINTING: copy one full block from
+           "painting-card" to its closing </div>, paste it
+           above the "Add new paintings here" comment,
+           and update the content.
+      ====================================================== -->
+      <div class="paintings-grid">
+
+        <!-- ═══════════════════════════════════════════════
+             DIPTYCH — Primtemps de Beyrouth à Barcelone
+             Two landscape panels, always side by side
+        ════════════════════════════════════════════════ -->
+        <p class="diptych-label">Diptych</p>
+
+        <!-- ——— 1. Primtemps I ——— -->
+        <div class="painting-card size-landscape-wide"
+             data-title="Primtemps de Beyrouth à Barcelone — I"
+             data-images="Primtemps de Beyrouth à Barcelone.png|Primtemps de Beyrouth à Barcelone_detail1.jpg|Primtemps de Beyrouth à Barcelone_detail2.png|Primtemps de Beyrouth à Barcelone_detail3.jpg|Primtemps de Beyrouth à Barcelone_detail4.jpg">
+          <div class="painting-thumb">
+            <img src="Primtemps de Beyrouth à Barcelone.png" alt="Primtemps de Beyrouth à Barcelone I" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Primtemps de Beyrouth à Barcelone</p>
+              <p class="painting-subtitle">I / II</p>
+              <p class="painting-meta">110 × 82 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 410</span>
+          </div>
+        </div>
+
+        <!-- ——— 2. Primtemps II ——— -->
+        <div class="painting-card size-landscape-wide"
+             data-title="Primtemps de Beyrouth à Barcelone — II"
+             data-images="Primtemps de Beyrouth à Barcelone 2.jpg|Primtemps de Beyrouth à Barcelone 2_detail.jpg|Primtemps de Beyrouth à Barcelone 2_detail 2.jpg|Primtemps de Beyrouth à Barcelone 2_detail 3.jpg">
+          <div class="painting-thumb">
+            <img src="Primtemps de Beyrouth à Barcelone 2.jpg" alt="Primtemps de Beyrouth à Barcelone II" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Primtemps de Beyrouth à Barcelone</p>
+              <p class="painting-subtitle">II / II</p>
+              <p class="painting-meta">110 × 82 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 410</span>
+          </div>
+        </div>
+
+        <!-- ——— 3. Brise douce — landscape 1.08 ——— -->
+        <div class="painting-card size-landscape"
+             data-title="Brise douce"
+             data-images="Brise douce.png|Brise douce_detail.jpg|Brise douce_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Brise douce.png" alt="Brise douce" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Brise douce</p>
+              <p class="painting-meta">82 × 80 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 350</span>
+          </div>
+        </div>
+
+        <!-- ——— 4. Fleurs des champs — landscape 1.38 ——— -->
+        <div class="painting-card size-landscape"
+             data-title="Fleurs des champs"
+             data-images="Fleurs des champs.jpg|Fleurs des champs_detail.jpg|Fleurs des champs_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Fleurs des champs.jpg" alt="Fleurs des champs" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Fleurs des champs</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 5. Fleurs bleues — landscape 1.11 ——— -->
+        <div class="painting-card size-landscape"
+             data-title="Fleurs bleues"
+             data-images="Fleurs bleues.png|Fleurs bleues_detail.jpg">
+          <div class="painting-thumb">
+            <img src="Fleurs bleues.png" alt="Fleurs bleues" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Fleurs bleues</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 6. Mimosa — near square 0.93 ——— -->
+        <div class="painting-card size-square"
+             data-title="Mimosa"
+             data-images="Mimosa.png">
+          <div class="painting-thumb">
+            <img src="Mimosa.png" alt="Mimosa" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Mimosa</p>
+              <p class="painting-meta">50 × 40 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 170</span>
+          </div>
+        </div>
+
+        <!-- ——— 7. Inspiration orchidées — portrait 0.74 ——— -->
+        <div class="painting-card"
+             data-title="Inspiration orchidées"
+             data-images="Inspiration orchidées.png|Inspiration orchidées_detail.jpg|Inspiration orchidées_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Inspiration orchidées.png" alt="Inspiration orchidées" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Inspiration orchidées</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 8. Wedding cake — portrait 0.72 ——— -->
+        <div class="painting-card"
+             data-title="Wedding cake"
+             data-images="Wedding cake.jpg|Wedding cake_detail.jpg|Wedding cake_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Wedding cake.jpg" alt="Wedding cake" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Wedding cake</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 9. Écorce — portrait 0.72 ——— -->
+        <div class="painting-card"
+             data-title="Écorce"
+             data-images="Ecorce.jpg|Ecorce_detail 1.jpg|Ecorce_detail 2.jpg">
+          <div class="painting-thumb">
+            <img src="Ecorce_detail 1.jpg" alt="Écorce" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Écorce</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 8. Nuria — portrait 0.72 ——— -->
+        <div class="painting-card"
+             data-title="Nuria"
+             data-images="Nuria_detail.jpeg|Nuria.jpeg|Nuria_detail 2.jpeg|Nuria_detail 3.jpeg">
+          <div class="painting-thumb">
+            <img src="Nuria_detail.jpeg" alt="Nuria" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Nuria</p>
+              <p class="painting-meta">70 × 50 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 210</span>
+          </div>
+        </div>
+
+        <!-- ——— 10. Bleu — portrait 0.80 ——— -->
+        <div class="painting-card"
+             data-title="Bleu"
+             data-images="Bleu.png|Bleu_detail 2.jpg">
+          <div class="painting-thumb">
+            <img src="Bleu.png" alt="Bleu" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Bleu</p>
+              <p class="painting-meta">50 × 40 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 170</span>
+          </div>
+        </div>
+
+        <!-- ——— 11. Sant Jordi — portrait ——— -->
+        <div class="painting-card"
+             data-title="Sant Jordi"
+             data-images="Sant Jordi.png|Sant Jordi_detail 1.jpg|Sant Jordi_detail 2.jpg">
+          <div class="painting-thumb">
+            <img src="Sant Jordi.png" alt="Sant Jordi" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Sant Jordi</p>
+              <p class="painting-meta">50 × 40 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 170</span>
+          </div>
+        </div>
+
+        <!-- ——— 12. Inspiration jasmin — portrait 0.86 ——— -->
+        <div class="painting-card"
+             data-title="Inspiration jasmin"
+             data-images="Inspiration jasmin.png|Inspiration jasmin_detail.jpg|Inspiration jasmin_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Inspiration jasmin.png" alt="Inspiration jasmin" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Inspiration jasmin</p>
+              <p class="painting-meta">40 × 30 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 110</span>
+          </div>
+        </div>
+
+        <!-- ——— 13. Pissenlit — portrait 0.75 ——— -->
+        <div class="painting-card"
+             data-title="Pissenlit"
+             data-images="Pissenlit.png|Pissenlit_detail.jpg|Pissenlit_detail2.jpg">
+          <div class="painting-thumb">
+            <img src="Pissenlit.png" alt="Pissenlit" loading="lazy" />
+            <div class="painting-thumb-overlay"><span>View details</span></div>
+          </div>
+          <div class="painting-info">
+            <div class="painting-info-left">
+              <p class="painting-title">Pissenlit</p>
+              <p class="painting-meta">40 × 30 cm (framed)</p>
+            </div>
+            <span class="painting-price">€ 110</span>
+          </div>
+        </div>
+
+        <!-- ——— Add new paintings here ——— -->
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ======================================================
+       CONTACT
+  ====================================================== -->
+  <section id="contact">
+    <div class="container">
+      <p class="section-label">Get in touch</p>
+      <h2 class="section-title">Commissions &amp; inquiries</h2>
+      <p class="contact-text">
+        Interested in a work or would like to discuss a collaboration? Reach out to my email bellow.
+      </p>
+      <!-- REPLACE: your email address -->
+      <a href="mailto:elissacusson@gmail.com" class="contact-email">elissacusson@gmail.com</a>
+    </div>
+  </section>
+
+
+  <!-- ======================================================
+       FOOTER
+  ====================================================== -->
+  <footer>
+    <div class="container">
+      &copy; 2026 Elissa Cusson. All rights reserved.
+    </div>
+  </footer>
+
+
+  <!-- ======================================================
+       LIGHTBOX
+  ====================================================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lb-close" aria-label="Close">&times;</button>
+      <img class="lightbox-img" id="lb-img" src="" alt="" />
+      <p class="lightbox-caption" id="lb-caption"></p>
+      <div class="lightbox-nav">
+        <button class="lightbox-btn" id="lb-prev" aria-label="Previous">&#8592;</button>
+        <span class="lightbox-counter" id="lb-counter"></span>
+        <button class="lightbox-btn" id="lb-next" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================================================
+       JAVASCRIPT
+  ====================================================== -->
+  <script>
+    // ── Wire up each card ─────────────────────────────────────
+    document.querySelectorAll('.painting-card').forEach(card => {
+      const raw    = (card.dataset.images || '').trim();
+      const images = raw ? raw.split('|').map(s => s.trim()).filter(Boolean) : [];
+      const title  = (card.dataset.title || '').trim();
+      const thumb  = card.querySelector('.painting-thumb');
+      if (thumb && images.length) {
+        thumb.style.cursor = 'pointer';
+        thumb.addEventListener('click', () => openLightbox(images, title));
+      }
+    });
+
+    // ── Lightbox state ────────────────────────────────────────
+    let lbImages = [], lbTitle = '', lbIndex = 0;
+
+    const lightbox  = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lb-img');
+    const lbCaption = document.getElementById('lb-caption');
+    const lbCounter = document.getElementById('lb-counter');
+    const lbClose   = document.getElementById('lb-close');
+    const lbPrev    = document.getElementById('lb-prev');
+    const lbNext    = document.getElementById('lb-next');
+
+    function openLightbox(images, title) {
+      lbImages = images;
+      lbTitle  = title;
+      lbIndex  = 0;
+      render();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lbImg.src = ''; // free memory
+    }
+
+    function render() {
+      lbImg.src               = lbImages[lbIndex];
+      lbImg.alt               = lbTitle + (lbIndex > 0 ? ' — detail ' + lbIndex : '');
+      lbCaption.textContent   = lbIndex === 0 ? lbTitle : 'Detail ' + lbIndex;
+      lbCounter.textContent   = (lbIndex + 1) + ' / ' + lbImages.length;
+      lbPrev.style.opacity    = lbIndex === 0 ? '0.3' : '1';
+      lbNext.style.opacity    = lbIndex === lbImages.length - 1 ? '0.3' : '1';
+      lbPrev.style.pointerEvents = lbIndex === 0 ? 'none' : 'auto';
+      lbNext.style.pointerEvents = lbIndex === lbImages.length - 1 ? 'none' : 'auto';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; render(); } });
+    lbNext.addEventListener('click', () => { if (lbIndex < lbImages.length - 1) { lbIndex++; render(); } });
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape')       closeLightbox();
+      if (e.key === 'ArrowLeft'  && lbIndex > 0)                    { lbIndex--; render(); }
+      if (e.key === 'ArrowRight' && lbIndex < lbImages.length - 1)  { lbIndex++; render(); }
+    });
+  </script>
+
+</body>
+</html>
