@@ -71,6 +71,17 @@
       color: var(--color-muted); transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--color-text); }
+    .lang-switch { display: flex; align-items: baseline; gap: 0.35rem; }
+    .lang-switch::before { content: "|"; color: var(--color-border); margin-right: 0.9rem; }
+    .lang-switch span { color: var(--color-border); font-size: 0.7rem; }
+    .lang-switch button {
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: var(--font-body); font-size: 0.78rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--color-muted); transition: color 0.2s;
+    }
+    .lang-switch button:hover { color: var(--color-text); }
+    .lang-switch button.active { color: var(--color-accent); }
 
     /* ============================================================
        BIO
@@ -354,9 +365,12 @@
     <div class="nav-inner">
       <a href="index.html" class="nav-name">Elissa Cusson</a>
       <ul class="nav-links">
-        <li><a href="bio.html">About</a></li>
-        <li><a href="#series">Works</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="bio.html" data-i18n="nav_about">About</a></li>
+        <li><a href="#series" data-i18n="nav_works">Works</a></li>
+        <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+        <li class="lang-switch">
+          <button type="button" data-lang="en" class="active">EN</button><span>/</span><button type="button" data-lang="fr">FR</button><span>/</span><button type="button" data-lang="ca">CA</button>
+        </li>
       </ul>
     </div>
   </nav>
@@ -368,9 +382,9 @@
   <section id="series">
     <div class="container">
 
-      <p class="section-label">Painting Series</p>
-      <h2 class="section-title">Between Two Springs</h2>
-      <p class="section-intro">
+      <p class="section-label" data-i18n="series_label">Painting Series</p>
+      <h2 class="section-title" data-i18n="series_title">Between Two Springs</h2>
+      <p class="section-intro" data-i18n-html="series_intro">
         Spring in Barcelona arrives gently. Warm air, the scent of flowers, light that makes everything feel soft and pleasant. It is easy to surrender to it.<br><br>
         But spring also arrives in Lebanon, where I have roots and people I love. There, the same season carries a different weight: dust and rubble alongside blossoms, beauty that exists in spite of everything.<br><br>
         Between Two Springs is born from that contradiction and from the guilt of living in sweetness while those close to me live in the shadow of war. The paintings hold both truths at once: flowers push through, colour flickers with hope, but the charcoal and Chinese ink stain everything, seep into the edges, refuse to let the light be simple.<br><br>
@@ -397,7 +411,7 @@
              DIPTYCH — Printemps de Beyrouth à Barcelone
              Two landscape panels, always side by side
         ════════════════════════════════════════════════ -->
-        <p class="diptych-label">Diptych</p>
+        <p class="diptych-label" data-i18n="diptych">Diptych</p>
 
         <!-- ——— 1. Printemps I ——— -->
         <div class="painting-card size-landscape-wide"
@@ -405,13 +419,13 @@
              data-images="Primtemps de Beyrouth a Barcelone.png|Primtemps de Beyrouth a Barcelone_detail1.jpg|Primtemps de Beyrouth a Barcelone_detail2.png|Primtemps de Beyrouth a Barcelone_detail3.jpg|Primtemps de Beyrouth a Barcelone_detail4.jpg">
           <div class="painting-thumb">
             <img src="Primtemps de Beyrouth a Barcelone.png" alt="Printemps de Beyrouth à Barcelone I" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Printemps de Beyrouth à Barcelone</p>
               <p class="painting-subtitle">I / II</p>
-              <p class="painting-meta">110 × 82 cm (framed)</p>
+              <p class="painting-meta">110 × 82 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 410</span>
           </div>
@@ -423,13 +437,13 @@
              data-images="Primtemps de Beyrouth a Barcelone 2.jpg|Primtemps de Beyrouth a Barcelone 2_detail.jpg|Primtemps de Beyrouth a Barcelone 2_detail 2.jpg|Primtemps de Beyrouth a Barcelone 2_detail 3.jpg">
           <div class="painting-thumb">
             <img src="Primtemps de Beyrouth a Barcelone 2.jpg" alt="Printemps de Beyrouth à Barcelone II" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Printemps de Beyrouth à Barcelone</p>
               <p class="painting-subtitle">II / II</p>
-              <p class="painting-meta">110 × 82 cm (framed)</p>
+              <p class="painting-meta">110 × 82 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 410</span>
           </div>
@@ -441,12 +455,12 @@
              data-images="Brise douce.png|Brise douce_detail.jpg|Brise douce_detail2.jpg">
           <div class="painting-thumb">
             <img src="Brise douce.png" alt="Douce brise" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Douce brise</p>
-              <p class="painting-meta">82 × 80 cm (framed)</p>
+              <p class="painting-meta">82 × 80 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 350</span>
           </div>
@@ -458,12 +472,12 @@
              data-images="Fleurs des champs.jpg|Fleurs des champs_detail.jpg|Fleurs des champs_detail2.jpg">
           <div class="painting-thumb">
             <img src="Fleurs des champs.jpg" alt="Fleurs des champs" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Fleurs des champs</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -475,12 +489,12 @@
              data-images="Fleurs bleues.png|Fleurs bleues_detail.jpg">
           <div class="painting-thumb">
             <img src="Fleurs bleues.png" alt="Fleurs bleues" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Fleurs bleues</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -492,12 +506,12 @@
              data-images="Mimosa.png">
           <div class="painting-thumb">
             <img src="Mimosa.png" alt="Mimosa" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view">View</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Mimosa</p>
-              <p class="painting-meta">50 × 40 cm (framed)</p>
+              <p class="painting-meta">50 × 40 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 170</span>
           </div>
@@ -509,12 +523,12 @@
              data-images="Inspiration orchidees.png|Inspiration orchidees_detail.jpg|Inspiration orchidees_detail2.jpg">
           <div class="painting-thumb">
             <img src="Inspiration orchidees.png" alt="Inspiration orchidées" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Inspiration orchidées</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -526,12 +540,12 @@
              data-images="Wedding cake.jpg|Wedding cake_detail.jpg|Wedding cake_detail2.jpg">
           <div class="painting-thumb">
             <img src="Wedding cake.jpg" alt="Wedding cake" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Wedding cake</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -543,12 +557,12 @@
              data-images="Ecorce.jpg|Ecorce_detail 1.jpg|Ecorce_detail 2.jpg">
           <div class="painting-thumb">
             <img src="Ecorce_detail 1.jpg" alt="Écorce" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Écorce</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -560,12 +574,12 @@
              data-images="Nuria_detail.jpeg|Nuria.jpeg|Nuria_detail 2.jpeg|Nuria_detail 3.jpeg">
           <div class="painting-thumb">
             <img src="Nuria_detail.jpeg" alt="Núria" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Núria</p>
-              <p class="painting-meta">70 × 50 cm (framed)</p>
+              <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 210</span>
           </div>
@@ -577,12 +591,12 @@
              data-images="Bleu.png|Bleu_detail 2.jpg">
           <div class="painting-thumb">
             <img src="Bleu.png" alt="Bleu" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Bleu</p>
-              <p class="painting-meta">50 × 40 cm (framed)</p>
+              <p class="painting-meta">50 × 40 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 170</span>
           </div>
@@ -594,12 +608,12 @@
              data-images="Sant Jordi.png|Sant Jordi_detail 1.jpg|Sant Jordi_detail 2.jpg">
           <div class="painting-thumb">
             <img src="Sant Jordi.png" alt="Sant Jordi" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Sant Jordi</p>
-              <p class="painting-meta">50 × 40 cm (framed)</p>
+              <p class="painting-meta">50 × 40 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 170</span>
           </div>
@@ -611,12 +625,12 @@
              data-images="Inspiration jasmin.png|Inspiration jasmin_detail.jpg|Inspiration jasmin_detail2.jpg">
           <div class="painting-thumb">
             <img src="Inspiration jasmin.png" alt="Inspiration jasmin" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Inspiration jasmin</p>
-              <p class="painting-meta">40 × 30 cm (framed)</p>
+              <p class="painting-meta">40 × 30 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 110</span>
           </div>
@@ -628,12 +642,12 @@
              data-images="Pissenlit.png|Pissenlit_detail.jpg|Pissenlit_detail2.jpg">
           <div class="painting-thumb">
             <img src="Pissenlit.png" alt="Pissenlit" loading="lazy" />
-            <div class="painting-thumb-overlay"><span>View details</span></div>
+            <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
             <div class="painting-info-left">
               <p class="painting-title">Pissenlit</p>
-              <p class="painting-meta">40 × 30 cm (framed)</p>
+              <p class="painting-meta">40 × 30 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
             <span class="painting-price">€ 110</span>
           </div>
@@ -653,10 +667,10 @@
   ====================================================== -->
   <section id="contact">
     <div class="container">
-      <p class="section-label">Get in touch</p>
-      <h2 class="section-title">Commissions &amp; inquiries</h2>
-      <p class="contact-text">
-        Interested in a work or would like to discuss a collaboration? Reach out to my email bellow.
+      <p class="section-label" data-i18n="contact_label">Get in touch</p>
+      <h2 class="section-title" data-i18n-html="contact_title">Commissions &amp; inquiries</h2>
+      <p class="contact-text" data-i18n="contact_text">
+        Interested in a work or would like to discuss a collaboration? Reach out to my email below.
       </p>
       <!-- REPLACE: your email address -->
       <a href="mailto:elissacusson@gmail.com" class="contact-email">elissacusson@gmail.com</a>
@@ -669,7 +683,7 @@
   ====================================================== -->
   <footer>
     <div class="container">
-      &copy; 2026 Elissa Cusson. All rights reserved.
+      &copy; 2026 Elissa Cusson. <span data-i18n="rights">All rights reserved.</span>
     </div>
   </footer>
 
@@ -695,6 +709,71 @@
        JAVASCRIPT
   ====================================================== -->
   <script>
+
+    // ── Language switching ────────────────────────────────────
+    const I18N = {
+      en: {
+        nav_about: "About", nav_works: "Works", nav_contact: "Contact",
+        series_label: "Painting Series",
+        series_title: "Between Two Springs",
+        series_intro: "Spring in Barcelona arrives gently. Warm air, the scent of flowers, light that makes everything feel soft and pleasant. It is easy to surrender to it.<br><br>But spring also arrives in Lebanon, where I have roots and people I love. There, the same season carries a different weight: dust and rubble alongside blossoms, beauty that exists in spite of everything.<br><br><em>Between Two Springs</em> is born from that contradiction and from the guilt of living in sweetness while those close to me live in the shadow of war. The paintings hold both truths at once: flowers push through, colour flickers with hope, but the charcoal and Chinese ink stain everything, seep into the edges, refuse to let the light be simple.<br><br>These works do not resolve the tension. They sit inside it.",
+        diptych: "Diptych", view_details: "View details", view: "View", framed: "framed",
+        detail: "Detail",
+        contact_label: "Get in touch",
+        contact_title: "Commissions &amp; inquiries",
+        contact_text: "Interested in a work or would like to discuss a collaboration? Reach out to my email below.",
+        rights: "All rights reserved."
+      },
+      fr: {
+        nav_about: "À propos", nav_works: "Œuvres", nav_contact: "Contact",
+        series_label: "Série de peintures",
+        series_title: "Entre deux printemps",
+        series_intro: "À Barcelone, le printemps arrive doucement. L\u2019air tiède, le parfum des fleurs, une lumière qui rend tout doux et agréable. Il est facile de s\u2019y abandonner.<br><br>Mais le printemps arrive aussi au Liban, où j\u2019ai des racines et des êtres que j\u2019aime. Là-bas, la même saison porte un autre poids : la poussière et les décombres aux côtés des fleurs, une beauté qui existe malgré tout.<br><br><em>Entre deux printemps</em> naît de cette contradiction, et de la culpabilité de vivre dans la douceur pendant que mes proches vivent à l\u2019ombre de la guerre. Les peintures tiennent les deux vérités à la fois : les fleurs percent, la couleur vacille d\u2019espoir, mais le fusain et l\u2019encre de Chine tachent tout, s\u2019infiltrent dans les bords, refusent que la lumière soit simple.<br><br>Ces œuvres ne résolvent pas la tension. Elles l\u2019habitent.",
+        diptych: "Diptyque", view_details: "Voir les détails", view: "Voir", framed: "encadré",
+        detail: "Détail",
+        contact_label: "Contact",
+        contact_title: "Commandes &amp; demandes",
+        contact_text: "Une œuvre vous intéresse, ou vous souhaitez discuter d\u2019une collaboration ? Écrivez-moi à l\u2019adresse ci-dessous.",
+        rights: "Tous droits réservés."
+      },
+      ca: {
+        nav_about: "Sobre mi", nav_works: "Obres", nav_contact: "Contacte",
+        series_label: "Sèrie de pintures",
+        series_title: "Entre dues primaveres",
+        series_intro: "A Barcelona, la primavera arriba suaument. L\u2019aire tebi, l\u2019olor de les flors, una llum que ho fa tot suau i plaent. És fàcil abandonar-s\u2019hi.<br><br>Però la primavera també arriba al Líban, on tinc arrels i persones que estimo. Allà, la mateixa estació porta un altre pes: pols i runa al costat de les flors, una bellesa que existeix malgrat tot.<br><br><em>Entre dues primaveres</em> neix d\u2019aquesta contradicció, i de la culpa de viure en la dolçor mentre les persones que estimo viuen a l\u2019ombra de la guerra. Les pintures sostenen les dues veritats alhora: les flors s\u2019obren pas, el color vacil·la d\u2019esperança, però el carbonet i la tinta xinesa ho taquen tot, s\u2019escolen per les vores, es neguen a deixar que la llum sigui simple.<br><br>Aquestes obres no resolen la tensió. L\u2019habiten.",
+        diptych: "Díptic", view_details: "Veure els detalls", view: "Veure", framed: "emmarcat",
+        detail: "Detall",
+        contact_label: "Posa\u2019t en contacte",
+        contact_title: "Encàrrecs i consultes",
+        contact_text: "T\u2019interessa alguna obra o vols parlar d\u2019una col·laboració? Escriu-me al correu de sota.",
+        rights: "Tots els drets reservats."
+      }
+    };
+
+    let currentLang = localStorage.getItem('site-lang') || 'en';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('site-lang', lang);
+      document.documentElement.lang = lang;
+      const dict = I18N[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll('.lang-switch button').forEach(btn =>
+        btn.classList.toggle('active', btn.dataset.lang === lang));
+    }
+
+    document.querySelectorAll('.lang-switch button').forEach(btn =>
+      btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
+
+    applyLang(currentLang);
+
     // ── Wire up each card ─────────────────────────────────────
     document.querySelectorAll('.painting-card').forEach(card => {
       const raw    = (card.dataset.images || '').trim();
@@ -735,8 +814,8 @@
 
     function render() {
       lbImg.src               = lbImages[lbIndex];
-      lbImg.alt               = lbTitle + (lbIndex > 0 ? ' — detail ' + lbIndex : '');
-      lbCaption.textContent   = lbIndex === 0 ? lbTitle : 'Detail ' + lbIndex;
+      lbImg.alt               = lbTitle + (lbIndex > 0 ? ' — ' + I18N[currentLang].detail.toLowerCase() + ' ' + lbIndex : '');
+      lbCaption.textContent   = lbIndex === 0 ? lbTitle : I18N[currentLang].detail + ' ' + lbIndex;
       lbCounter.textContent   = (lbIndex + 1) + ' / ' + lbImages.length;
       lbPrev.style.opacity    = lbIndex === 0 ? '0.3' : '1';
       lbNext.style.opacity    = lbIndex === lbImages.length - 1 ? '0.3' : '1';
