@@ -354,6 +354,48 @@
     }
     .lightbox-close:hover { color: rgba(242,239,232,1); }
 
+
+    /* ============================================================
+       MOBILE LAYOUT — centered & aligned (desktop unchanged)
+    ============================================================ */
+    @media (max-width: 700px) {
+      /* Top banner: stack and center */
+      .nav-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+        text-align: center;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 0.6rem;
+      }
+      .lang-switch::before { display: none; }
+      .lang-switch {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Series section */
+      #series .section-label,
+      #series .section-title { text-align: center; }
+      .section-intro { margin-left: auto; margin-right: auto; }
+      .diptych-label { text-align: center; }
+
+      /* Paintings: centered images and captions */
+      .painting-thumb { margin-left: auto; margin-right: auto; }
+      .painting-caption,
+      .painting-title,
+      .painting-meta { text-align: center; }
+
+      /* Contact + footer */
+      #contact .section-label,
+      #contact .section-title,
+      .contact-text { text-align: center; }
+      #contact { text-align: center; }
+      footer .container { text-align: center; }
+    }
   </style>
 </head>
 <body>
