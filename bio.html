@@ -191,9 +191,10 @@
     ============================================================ */
     @media (max-width: 700px) {
       .bio-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .bio-photo { min-height: 0; aspect-ratio: 4 / 3; }
-      .exhibitions-photo { min-height: 0; }
-      .exhibitions-photo img { aspect-ratio: 4 / 3; flex: none; }
+      .bio-photo { min-height: 0; height: auto; aspect-ratio: auto; }
+      .bio-photo img { height: auto; object-fit: contain; }
+      .exhibitions-photo { min-height: 0; height: auto; }
+      .exhibitions-photo img { aspect-ratio: auto; flex: none; height: auto; object-fit: contain; }
       .nav-links { gap: 1.2rem; }
       :root { --section-gap: 3rem; }
       .exhibitions-list li { flex-direction: column; gap: 0.2rem; }
