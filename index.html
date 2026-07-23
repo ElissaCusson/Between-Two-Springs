@@ -44,7 +44,7 @@
        LAYOUT
     ============================================================ */
     .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
-    section { padding: var(--section-gap) 0; }
+    section { padding: var(--section-gap) 0; scroll-margin-top: 100px; }
     hr.divider { border: none; border-top: 1px solid var(--color-border); margin: 0; }
 
     /* ============================================================
@@ -130,6 +130,11 @@
     .section-intro {
       font-size: clamp(0.85rem, 1.3vw, 0.95rem); color: var(--color-text);
       max-width: none; margin-bottom: clamp(6rem, 12vw, 10rem); line-height: 1.8;
+      text-align: justify;
+      text-justify: inter-word;
+      /* hyphenation keeps justified lines from opening up on narrow screens */
+      -webkit-hyphens: auto;
+      hyphens: auto;
     }
 
     #series .section-intro { max-width: none; }
@@ -380,7 +385,12 @@
       /* Series section */
       #series .section-label,
       #series .section-title { text-align: center; }
-      .section-intro { margin-left: auto; margin-right: auto; }
+      .section-intro {
+        margin-left: auto; margin-right: auto;
+        /* narrow columns: keep it justified but let words breathe */
+        word-spacing: -0.01em;
+        text-align: justify;
+      }
       .diptych-label { text-align: center; }
 
       /* Paintings: centered images and captions */
@@ -815,6 +825,86 @@
       btn.addEventListener('click', () => applyLang(btn.dataset.lang)));
 
     applyLang(currentLang);
+
+    // ── Anchor scrolling that survives lazy-loaded images ─────
+    // The paintings load lazily and have no reserved height, so the
+    // page grows while it scrolls: a plain #contact jump lands in the
+    // middle of the gallery. We scroll to the target, then keep
+    // re-aligning for a few seconds until the layout stops shifting.
+    (function () {
+      const navEl = document.querySelector('nav');
+      let stopCurrent = null;
+
+      function targetY(el) {
+        const navH = navEl ? navEl.getBoundingClientRect().height : 0;
+        const y = el.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        return Math.max(0, Math.min(y, max));
+      }
+
+      function goTo(el, smooth) {
+        if (stopCurrent) stopCurrent();
+
+        window.scrollTo({ top: targetY(el), behavior: smooth ? 'smooth' : 'auto' });
+
+        let elapsed = 0, timer = null;
+        const tick = 120, limit = 5000;
+
+        // Let the smooth animation land first, then start correcting
+        const startDelay = setTimeout(() => { timer = setInterval(step, tick); },
+                                      smooth ? 800 : 60);
+
+        function step() {
+          elapsed += tick;
+          const y = targetY(el);
+          if (Math.abs(window.pageYOffset - y) > 4) {
+            window.scrollTo({ top: y, behavior: 'auto' });
+          }
+          if (elapsed >= limit) stop();
+        }
+
+        function stop() {
+          clearTimeout(startDelay);
+          if (timer) clearInterval(timer);
+          window.removeEventListener('wheel', stop);
+          window.removeEventListener('touchstart', stop);
+          window.removeEventListener('keydown', stop);
+          if (stopCurrent === stop) stopCurrent = null;
+        }
+
+        // Any manual scroll hands control straight back to the visitor
+        window.addEventListener('wheel', stop, { passive: true });
+        window.addEventListener('touchstart', stop, { passive: true });
+        window.addEventListener('keydown', stop);
+        stopCurrent = stop;
+      }
+
+      // In-page links (Works / Contact in the nav)
+      document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+          const el = document.querySelector(link.getAttribute('href'));
+          if (!el) return;
+          e.preventDefault();
+          history.replaceState(null, '', link.getAttribute('href'));
+          goTo(el, true);
+        });
+      });
+
+      // Arriving from bio.html with index.html#contact in the URL
+      let userScrolled = false;
+      window.addEventListener('wheel', () => { userScrolled = true; }, { passive: true });
+      window.addEventListener('touchstart', () => { userScrolled = true; }, { passive: true });
+
+      function handleInitialHash() {
+        if (!location.hash || userScrolled) return;
+        const el = document.querySelector(location.hash);
+        if (el) goTo(el, false);
+      }
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      handleInitialHash();
+      window.addEventListener('load', handleInitialHash);
+      window.addEventListener('hashchange', handleInitialHash);
+    })();
 
     // ── Wire up each card ─────────────────────────────────────
     document.querySelectorAll('.painting-card').forEach(card => {
