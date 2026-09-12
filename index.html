@@ -239,6 +239,36 @@
       color: var(--color-text); white-space: nowrap;
     }
 
+    /* ── Works already in a private collection ───────────────── */
+    /* The collection line takes the place of the price, so the
+       card keeps its rhythm without announcing a price that is
+       no longer on offer. */
+    .painting-price.is-collected {
+      white-space: normal;
+      text-align: right;
+      max-width: 52%;
+      font-style: italic;
+      font-size: 0.7rem;
+      line-height: 1.45;
+      letter-spacing: 0.02em;
+      color: var(--color-muted);
+    }
+
+    /* Small marker on the image so the status reads at a glance
+       while scrolling the grid. */
+    .painting-thumb .sold-badge {
+      position: absolute;
+      top: 0.85rem; right: 0.85rem;
+      z-index: 2;
+      padding: 0.3rem 0.6rem;
+      background: rgba(242,239,232,0.92);
+      color: #141416;
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
     /* Diptych label above the two stacked panels */
     .diptych-label {
       grid-column: 1 / -1;
@@ -359,6 +389,28 @@
     }
     .lightbox-close:hover { color: rgba(242,239,232,1); }
 
+    /* ── Loading state ────────────────────────────────────────
+       Shown only when an image isn't in cache yet, so the visitor
+       sees feedback instead of a frozen frame. */
+    .lightbox.loading .lightbox-img { opacity: 0.25; }
+    .lightbox-img { transition: opacity 0.25s ease; }
+    .lightbox.loading .lightbox-inner::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 34px; height: 34px;
+      margin: -17px 0 0 -17px;
+      border: 1px solid rgba(242,239,232,0.25);
+      border-top-color: rgba(242,239,232,0.9);
+      border-radius: 50%;
+      animation: lb-spin 0.8s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes lb-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .lightbox.loading .lightbox-inner::after { animation-duration: 2s; }
+    }
+
 
     /* ============================================================
        MOBILE LAYOUT — centered & aligned (desktop unchanged)
@@ -398,6 +450,7 @@
       .painting-caption,
       .painting-title,
       .painting-meta { text-align: center; }
+      .painting-price.is-collected { max-width: none; text-align: right; }
 
       /* Contact + footer */
       #contact .section-label,
@@ -558,6 +611,7 @@
              data-images="Mimosa.png">
           <div class="painting-thumb">
             <img src="Mimosa.png" alt="Mimosa" loading="lazy" />
+            <span class="sold-badge" data-i18n="sold">Sold</span>
             <div class="painting-thumb-overlay"><span data-i18n="view">View</span></div>
           </div>
           <div class="painting-info">
@@ -565,7 +619,7 @@
               <p class="painting-title">Mimosa</p>
               <p class="painting-meta">50 × 40 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
-            <span class="painting-price">€ 170</span>
+            <span class="painting-price is-collected" data-i18n="coll_geneva">Private collection — Geneva, Switzerland</span>
           </div>
         </div>
 
@@ -575,6 +629,7 @@
              data-images="Inspiration orchidees.png|Inspiration orchidees_detail.jpg|Inspiration orchidees_detail2.jpg">
           <div class="painting-thumb">
             <img src="Inspiration orchidees.png" alt="Inspiration orchidées" loading="lazy" />
+            <span class="sold-badge" data-i18n="sold">Sold</span>
             <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
@@ -582,7 +637,7 @@
               <p class="painting-title">Inspiration orchidées</p>
               <p class="painting-meta">70 × 50 cm (<span data-i18n="framed">framed</span>)</p>
             </div>
-            <span class="painting-price">€ 210</span>
+            <span class="painting-price is-collected" data-i18n="coll_paris">Private collection — Paris, France</span>
           </div>
         </div>
 
@@ -771,6 +826,9 @@
         series_intro: "Spring in Barcelona arrives gently. Warm air, the scent of flowers, light that makes everything feel soft and pleasant. It is easy to surrender to it.<br><br>But spring also arrives in Lebanon, where I have roots and people I love. There, the same season carries a different weight: dust and rubble alongside blossoms, beauty that exists in spite of everything.<br><br><em>Between Two Springs</em> is born from that contradiction and from the guilt of living in sweetness while those close to me live in the shadow of war. The paintings hold both truths at once: flowers push through, colour flickers with hope, but the charcoal and Chinese ink stain everything, seep into the edges, refuse to let the light be simple.<br><br>These works do not resolve the tension. They sit inside it.",
         diptych: "Diptych", view_details: "View details", view: "View", framed: "framed",
         detail: "Detail",
+        sold: "Sold",
+        coll_paris: "Private collection — Paris, France",
+        coll_geneva: "Private collection — Geneva, Switzerland",
         contact_label: "Get in touch",
         contact_title: "Commissions &amp; inquiries",
         contact_text: "Interested in a work or would like to discuss a collaboration? Reach out to my email below.",
@@ -783,6 +841,9 @@
         series_intro: "À Barcelone, le printemps arrive tranquillement. L\u2019air est doux, le parfum des fleurs est agréable, et il y a cette lumière qui rend les rues poétiques. Il est facile de s\u2019y abandonner.<br><br>Mais le printemps arrive aussi au Liban, où j\u2019ai des racines et mes proches habitent. Là-bas, la même saison porte un autre poids : la poussière et les décombres se placent aux côtés des fleurs, une beauté qui persiste malgré tout.<br><br><em>Entre deux printemps</em> naît de cette contradiction, et de la culpabilité de vivre dans la douceur pendant que des peuples vivent à l\u2019ombre de la guerre. Les peintures portent les deux vérités à la fois : les fleurs percent, la couleur vacille d\u2019espoir, mais le fusain et l\u2019encre de Chine tachent tout et refusent que la lumière transparesse avec pureté.<br><br>Ces œuvres ne résolvent pas les conflits. Elles y habitent.",
         diptych: "Diptyque", view_details: "Voir les détails", view: "Voir", framed: "encadré",
         detail: "Détail",
+        sold: "Vendu",
+        coll_paris: "Collection privée — Paris, France",
+        coll_geneva: "Collection privée — Genève, Suisse",
         contact_label: "Contact",
         contact_title: "Commandes &amp; demandes",
         contact_text: "Une œuvre vous intéresse, ou vous souhaitez discuter d\u2019une collaboration ? Écrivez-moi à l\u2019adresse ci-dessous.",
@@ -795,6 +856,9 @@
         series_intro: "A Barcelona, la primavera arriba a poc a poc. L’aire és suau, l’aroma de les flors omple els carrers, i una llum els hi dona una qualitat poètica. És fàcil deixar-se portar per aquesta calma.<br><br>Però la primavera també arriba al Líban, on tinc les meves arrels i on viuen les persones que estimo. Allà, la mateixa estació porta un altre pes: la pols i les runes conviuen amb les flors, una bellesa que persisteix malgrat tot.<br><br><em>Entre dues primaveres</em> neix d’aquesta contradicció i de la culpa de viure en la dolçor mentre altres pobles viuen sota l’ombra de la guerra. Les pintures sostenen aquestes dues realitats alhora: les flors emergeixen, el color tremola d’esperança, però el carbonet i la tinta xinesa ho taquen tot i impedeixen que la llum aparegui amb tota la seva puresa.<br><br>Aquestes obres no resolen els conflictes. Hi habiten.",
         diptych: "Díptic", view_details: "Veure els detalls", view: "Veure", framed: "emmarcat",
         detail: "Detall",
+        sold: "Venut",
+        coll_paris: "Col·lecció privada — París, França",
+        coll_geneva: "Col·lecció privada — Ginebra, Suïssa",
         contact_label: "Posa\u2019t en contacte",
         contact_title: "Encàrrecs i consultes",
         contact_text: "T\u2019interessa alguna obra o vols parlar d\u2019una col·laboració? Escriu-me al correu de sota.",
@@ -915,6 +979,17 @@
       if (thumb && images.length) {
         thumb.style.cursor = 'pointer';
         thumb.addEventListener('click', () => openLightbox(images, title));
+
+        // Head start: begin fetching the details as soon as the
+        // visitor shows interest, so the lightbox opens instantly.
+        let warmed = false;
+        const warm = () => {
+          if (warmed) return;
+          warmed = true;
+          images.forEach(preload);
+        };
+        thumb.addEventListener('mouseenter', warm);
+        thumb.addEventListener('touchstart', warm, { passive: true });
       }
     });
 
@@ -936,6 +1011,30 @@
       render();
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
+      // Pull the whole set into cache in the background, so the
+      // arrows have nothing left to download by the time they're used.
+      preloadAll();
+    }
+
+    // ── Image preloading ──────────────────────────────────────
+    const lbCache = new Map();
+
+    function preload(src) {
+      if (!src || lbCache.has(src)) return lbCache.get(src);
+      const img = new Image();
+      const p = new Promise(resolve => {
+        img.onload = img.onerror = () => resolve();
+      });
+      img.src = src;
+      lbCache.set(src, p);
+      return p;
+    }
+
+    function preloadAll() {
+      // Neighbours first — they're the ones an arrow click needs.
+      preload(lbImages[lbIndex + 1]);
+      preload(lbImages[lbIndex - 1]);
+      lbImages.forEach(preload);
     }
 
     function closeLightbox() {
@@ -945,7 +1044,20 @@
     }
 
     function render() {
-      lbImg.src               = lbImages[lbIndex];
+      const src = lbImages[lbIndex];
+      const cached = lbCache.has(src);
+
+      // Only show the spinner if the image isn't ready — avoids a
+      // flicker on images that are already in cache.
+      if (!cached) lightbox.classList.add('loading');
+
+      lbImg.onload = () => lightbox.classList.remove('loading');
+      lbImg.onerror = () => lightbox.classList.remove('loading');
+      lbImg.src = src;
+      // Images restored from cache can fire load before the handler
+      // is attached, so check the flag directly too.
+      if (lbImg.complete) lightbox.classList.remove('loading');
+
       lbImg.alt               = lbTitle + (lbIndex > 0 ? ' — ' + I18N[currentLang].detail.toLowerCase() + ' ' + lbIndex : '');
       lbCaption.textContent   = lbIndex === 0 ? lbTitle : I18N[currentLang].detail + ' ' + lbIndex;
       lbCounter.textContent   = (lbIndex + 1) + ' / ' + lbImages.length;
@@ -953,6 +1065,9 @@
       lbNext.style.opacity    = lbIndex === lbImages.length - 1 ? '0.3' : '1';
       lbPrev.style.pointerEvents = lbIndex === 0 ? 'none' : 'auto';
       lbNext.style.pointerEvents = lbIndex === lbImages.length - 1 ? 'none' : 'auto';
+
+      preload(lbImages[lbIndex + 1]);
+      preload(lbImages[lbIndex - 1]);
     }
 
     lbClose.addEventListener('click', closeLightbox);
