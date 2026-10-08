@@ -498,12 +498,17 @@
 
       <!-- =====================================================
            PAINTINGS
+
            Each card uses data-images="file1.jpg|file2.jpg|..."
-           The first image = main photo on the card.
-           The second image = detail shown on the card.
-           Any further images appear only in the lightbox.
-           The arrow button appears automatically when there
-           are more than 2 images total.
+           These are the images shown in the LIGHTBOX, in order.
+
+           The photo ON THE CARD is the <img src> inside
+           .painting-thumb. To change which photo a card shows,
+           you must edit BOTH:
+             1. the <img src="..."> in .painting-thumb
+             2. the FIRST entry of data-images
+           Keeping them identical means the lightbox opens on the
+           same image the visitor just clicked.
 
            TO ADD A NEW PAINTING: copy one full block from
            "painting-card" to its closing </div>, paste it
@@ -521,9 +526,9 @@
         <!-- ——— 1. Printemps I ——— -->
         <div class="painting-card size-landscape-wide"
              data-title="Printemps de Beyrouth à Barcelone — I"
-             data-images="Primtemps de Beyrouth a Barcelone_detail1.jpg|Primtemps de Beyrouth a Barcelone.png|Primtemps de Beyrouth a Barcelone_detail2.png|Primtemps de Beyrouth a Barcelone_detail3.jpg|Primtemps de Beyrouth a Barcelone_detail4.jpg">
+             data-images="Primtemps de Beyrouth a Barcelone.png|Primtemps de Beyrouth a Barcelone_detail1.jpg|Primtemps de Beyrouth a Barcelone_detail2.png|Primtemps de Beyrouth a Barcelone_detail3.jpg|Primtemps de Beyrouth a Barcelone_detail4.jpg">
           <div class="painting-thumb">
-            <img src="Primtemps de Beyrouth a Barcelone_detail1.jpg" alt="Printemps de Beyrouth à Barcelone I" loading="lazy" />
+            <img src="Primtemps de Beyrouth a Barcelone.png" alt="Printemps de Beyrouth à Barcelone I" loading="lazy" />
             <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
@@ -539,9 +544,9 @@
         <!-- ——— 2. Printemps II ——— -->
         <div class="painting-card size-landscape-wide"
              data-title="Printemps de Beyrouth à Barcelone — II"
-             data-images="Primtemps de Beyrouth a Barcelone 2_detail 3.jpg|Primtemps de Beyrouth a Barcelone 2_detail.jpg|Primtemps de Beyrouth a Barcelone 2_detail 2.jpg|Primtemps de Beyrouth a Barcelone 2.jpg">
+             data-images="Primtemps de Beyrouth a Barcelone 2.jpg|Primtemps de Beyrouth a Barcelone 2_detail.jpg|Primtemps de Beyrouth a Barcelone 2_detail 2.jpg|Primtemps de Beyrouth a Barcelone 2_detail 3.jpg">
           <div class="painting-thumb">
-            <img src="Primtemps de Beyrouth a Barcelone 2_detail 3.jpg" alt="Printemps de Beyrouth à Barcelone II" loading="lazy" />
+            <img src="Primtemps de Beyrouth a Barcelone 2.jpg" alt="Printemps de Beyrouth à Barcelone II" loading="lazy" />
             <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
           </div>
           <div class="painting-info">
@@ -661,7 +666,7 @@
         <!-- ——— 9. Écorce — portrait 0.72 ——— -->
         <div class="painting-card"
              data-title="Écorce"
-             data-images="Ecorce.jpg|Ecorce_detail 1.jpg|Ecorce_detail 2.jpg">
+             data-images="Ecorce_detail 1.jpg|Ecorce.jpg|Ecorce_detail 2.jpg">
           <div class="painting-thumb">
             <img src="Ecorce_detail 1.jpg" alt="Écorce" loading="lazy" />
             <div class="painting-thumb-overlay"><span data-i18n="view_details">View details</span></div>
@@ -675,7 +680,7 @@
           </div>
         </div>
 
-        <!-- ——— 8. Núria — portrait 0.72 ——— -->
+        <!-- ——— 10. Núria — portrait 0.72 ——— -->
         <div class="painting-card"
              data-title="Núria"
              data-images="Nuria_detail.jpeg|Nuria.jpeg|Nuria_detail 2.jpeg|Nuria_detail 3.jpeg">
@@ -692,7 +697,7 @@
           </div>
         </div>
 
-        <!-- ——— 10. Bleu — portrait 0.80 ——— -->
+        <!-- ——— 11. Bleu — portrait 0.80 ——— -->
         <div class="painting-card"
              data-title="Bleu"
              data-images="Bleu.png|Bleu_detail 2.jpg">
@@ -709,7 +714,7 @@
           </div>
         </div>
 
-        <!-- ——— 11. Sant Jordi — portrait ——— -->
+        <!-- ——— 12. Sant Jordi — portrait ——— -->
         <div class="painting-card"
              data-title="Sant Jordi"
              data-images="Sant Jordi.png|Sant Jordi_detail 1.jpg|Sant Jordi_detail 2.jpg">
@@ -726,7 +731,7 @@
           </div>
         </div>
 
-        <!-- ——— 12. Inspiration jasmin — portrait 0.86 ——— -->
+        <!-- ——— 13. Inspiration jasmin — portrait 0.86 ——— -->
         <div class="painting-card"
              data-title="Inspiration jasmin"
              data-images="Inspiration jasmin.png|Inspiration jasmin_detail.jpg|Inspiration jasmin_detail2.jpg">
@@ -743,7 +748,7 @@
           </div>
         </div>
 
-        <!-- ——— 13. Pissenlit — portrait 0.75 ——— -->
+        <!-- ——— 14. Pissenlit — portrait 0.75 ——— -->
         <div class="painting-card"
              data-title="Pissenlit"
              data-images="Pissenlit.png|Pissenlit_detail.jpg|Pissenlit_detail2.jpg">
